@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /socialnetwork
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/socialnetwork"
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  signerKey: "ztrrQKe0JyIv8oA3FWUZy95hwbJ/PVhN6ETBxw+m1xX6VPgxMAF+t2NrCa4yO3Ej"

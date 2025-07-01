@@ -35,7 +35,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(request ->
                     request
-                            .requestMatchers("/users/register","/auth/login").permitAll()
+                            .requestMatchers("/users/register","/auth/login","/uploads/**").permitAll()
                             .anyRequest().authenticated()
                         );
 

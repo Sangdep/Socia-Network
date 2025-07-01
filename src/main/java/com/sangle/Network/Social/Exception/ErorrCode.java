@@ -3,6 +3,9 @@ package com.sangle.Network.Social.Exception;
 public enum ErorrCode {
     USER_EXISTED(101,"user existed"),
     ID_USER_NOT_FOUND(102,"id not found"),
+    USERNAME_EXISTED(103,"username already exists"),
+    USERPROFILE_NOT_FOUND(301,"user not found"),
+
     NOT_FOUND_CODE(105,"booking not found confirmation code"),
     USER_NOT_FOUND(101,"user not found"),
     INVALID_DATE(401,"invalid date"),

@@ -5,6 +5,8 @@ import com.sangle.Network.Social.DTO.Response.UserResponse;
 import com.sangle.Network.Social.Entity.User;
 import com.sangle.Network.Social.Entity.UserProfile;
 import com.sangle.Network.Social.Enum.Role;
+import com.sangle.Network.Social.Exception.AppException;
+import com.sangle.Network.Social.Exception.ErorrCode;
 import com.sangle.Network.Social.Mapper.UserMapper;
 import com.sangle.Network.Social.Repository.UserRepository;
 import lombok.AccessLevel;
@@ -29,12 +31,12 @@ public class UserService {
     {
         if (userRepository.existsByEmail(request.getEmail()))
         {
-            throw new RuntimeException("fix sau");
+            throw new AppException(ErorrCode.USER_EXISTED);
         }
 
         if (userRepository.existsByUsername(request.getUsername()))
         {
-            throw new RuntimeException("customer sau");
+            throw new AppException(ErorrCode.USERNAME_EXISTED);
         }
 
         User user= userMapper.toUser(request);

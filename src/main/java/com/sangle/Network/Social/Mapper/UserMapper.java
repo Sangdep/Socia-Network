@@ -1,6 +1,7 @@
 package com.sangle.Network.Social.Mapper;
 
 import com.sangle.Network.Social.DTO.Request.UserCreateRequest;
+import com.sangle.Network.Social.DTO.Response.UserProfileResponse;
 import com.sangle.Network.Social.DTO.Response.UserResponse;
 import com.sangle.Network.Social.Entity.User;
 import com.sangle.Network.Social.Entity.UserProfile;
@@ -19,7 +20,7 @@ public interface UserMapper {
 
     UserResponse toUserDTO(User user);
 
-    UserProfile  toUserProfileDTO(UserProfile profile);
+
 
 
 }

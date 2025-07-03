@@ -11,6 +11,7 @@ import com.sangle.Network.Social.Repository.UserProfileRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,18 @@ public class UserProfileService {
     {
 
         UserProfile userProfile= userProfileRepository.findById(id)
+                .orElseThrow(()-> new AppException(ErorrCode.USERPROFILE_NOT_FOUND));
+
+        return userProfileMapper.toUserProfileReponse(userProfile);
+
+    }
+
+    //lay profile cua chinh user do
+    public UserProfileResponse getMyProfile()
+    {
+        var name = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        UserProfile userProfile= userProfileRepository.findByUsername(name)
                 .orElseThrow(()-> new AppException(ErorrCode.USERPROFILE_NOT_FOUND));
 
         return userProfileMapper.toUserProfileReponse(userProfile);

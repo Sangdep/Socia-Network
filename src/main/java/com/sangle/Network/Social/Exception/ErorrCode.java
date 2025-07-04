@@ -7,7 +7,9 @@ public enum ErorrCode {
     USERPROFILE_NOT_FOUND(301,"user not found"),
 
     NOT_FOUND_CODE(105,"booking not found confirmation code"),
-    USER_NOT_FOUND(101,"user not found"),
+    USER_NOT_FOUND(106,"user not found"),
+
+    POST_NOT_FOUND(107,"Post not found"),
     INVALID_DATE(401,"invalid date"),
     INVALID_DATE_RANGE(402,"check in date must be before check out date"),
     INTERNAL_SERVER_ERROR(500, "Lỗi hệ thống, vui lòng thử lại sau"),

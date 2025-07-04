@@ -31,4 +31,7 @@ public class PostLike {
 
     @Column(name = "liked_at", nullable = false)
     LocalDateTime likedAt = LocalDateTime.now();
+
+
+
 }

@@ -31,15 +31,15 @@ public class Post {
 
     @Lob // Dành cho nội dung văn bản có khả năng lớn
     @Column(columnDefinition = "TEXT") // Sử dụng kiểu TEXT trong DB cho nội dung lớn hơn
-    private String content;
+     String content;
 
     @Enumerated(EnumType.STRING) // Lưu enum dưới dạng String trong DB
     @Column(name = "post_type", nullable = false)
-    private PostType postType; // Enum: TEXT, IMAGE, VIDEO, ALBUM, v.v.
+     PostType postType; // Enum: TEXT, IMAGE, VIDEO, ALBUM, v.v.
 
     @Enumerated(EnumType.STRING) // Lưu enum dưới dạng String trong DB
     @Column(nullable = false)
-    private Privacy privacy; // Enum: PUBLIC, FRIENDS, ONLY_ME, CUSTOM
+     Privacy privacy; // Enum: PUBLIC, FRIENDS, ONLY_ME, CUSTOM
 
     private String location; // Tùy chọn
 
@@ -55,8 +55,9 @@ public class Post {
     @Column(name = "shares_count", nullable = false)
     private int sharesCount = 0;
 
+    @Builder.Default
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Media> mediaList = new ArrayList<>();
+     List<Media> mediaList = new ArrayList<>();
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

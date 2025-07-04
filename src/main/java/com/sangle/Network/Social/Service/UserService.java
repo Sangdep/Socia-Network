@@ -49,7 +49,6 @@ public class UserService {
         userProfile.setUser(user);
 
         user.setUserProfile(userProfile);
-
         return userMapper.toUserDTO(userRepository.save(user));
     }
 

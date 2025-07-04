@@ -1,11 +1,9 @@
+
 package com.sangle.Network.Social.DTO.Response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sangle.Network.Social.Entity.UserProfile;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -13,12 +11,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserResponse {
-    Long id;
-    String email;
-    String username;
-    UserProfileResponse userProfile;
-
-    Set<String> role;
-
+public class MediaResponse {
+    private Long id;
+    private String filePath;
+    private String mediaType;
+    private String caption;
 }

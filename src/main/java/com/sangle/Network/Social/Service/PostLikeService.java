@@ -62,14 +62,19 @@ public class PostLikeService {
             //Like +1
             post.setLikesCount(post.getLikesCount() + 1);
 
-            //gui thong bao
-            Notification noti= Notification.builder()
-                    .receiver(post.getUser())
-                    .sender(user)
-                    .type(NotificationType.LIKE)
-                    .content(user.getUsername() + "Đã thích bài viết của bạn")
-                    .build();
-            notificationRepository.save(noti);
+
+            //gui thong bao neu nguoi like ko phai la chu post
+            if (!post.getUser().getId().equals(user.getId()))
+            {
+                Notification noti= Notification.builder()
+                        .receiver(post.getUser())
+                        .sender(user)
+                        .type(NotificationType.LIKE)
+                        .content(user.getUsername() + " Đã thích bài viết của bạn")
+                        .build();
+                notificationRepository.save(noti);
+            }
+
             postRepository.save(post);
             return true;
         }

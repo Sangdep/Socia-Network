@@ -4,6 +4,7 @@ import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,9 +34,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->
                     request
-                            .requestMatchers("/users/register","/auth/login","/uploads/**").permitAll()
+                            .requestMatchers("/users/register","/auth/**","/uploads/**").permitAll()
                             .anyRequest().authenticated()
                         );
 
@@ -60,7 +62,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter()
     {
         CorsConfiguration corsConfiguration= new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:3000/chat"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowCredentials(true);

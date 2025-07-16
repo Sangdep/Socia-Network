@@ -1,7 +1,11 @@
 package com.sangle.Network.Social.Controller;
 
+import com.nimbusds.jose.JOSEException;
 import com.sangle.Network.Social.DTO.ApiResponse;
 import com.sangle.Network.Social.DTO.Request.LoginRequest;
+import com.sangle.Network.Social.DTO.Request.LogoutRequest;
+import com.sangle.Network.Social.DTO.Request.RefreshRequest;
+import com.sangle.Network.Social.DTO.Response.AuthenticationResponse;
 import com.sangle.Network.Social.DTO.Response.LoginResponse;
 import com.sangle.Network.Social.Service.AuthService;
 import lombok.AccessLevel;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,5 +34,18 @@ public class AuthController {
                 .message("login success")
                 .result(authService.login(request))
                 .build();
+    }
+
+    @PostMapping("/refresh")
+    ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshRequest request)
+            throws ParseException, JOSEException {
+        var result = authService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
+    }
+
+    @PostMapping("/logout")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authService.logout(request);
+        return ApiResponse.<Void>builder().build();
     }
 }

@@ -18,16 +18,16 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostResponse {
-    private Long id;
-    private String user; // Thông tin người dùng tạo bài viết
-    private String content;
-    private PostType postType;
-    private Privacy privacy;
-    private String location;
-    private boolean isDeleted;
-    private int likesCount;
-    private int commentsCount;
-    private int sharesCount;
-    private List<MediaResponse> mediaList;
-    private LocalDateTime createdAt;
+     Long id;
+     UserProfileResponse user;
+     String content;
+     PostType postType;
+     Privacy privacy;
+     String location;
+     boolean isDeleted;
+     int likesCount;
+     int commentsCount;
+     int sharesCount;
+     List<MediaResponse> mediaList;
+     LocalDateTime createdAt;
 }

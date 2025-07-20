@@ -59,4 +59,14 @@ public class PostController {
                 .build();
     }
 
+
+    @GetMapping("/get-my-post")
+    ApiResponse<List<PostResponse>>getMyPost()
+    {
+        return ApiResponse.<List<PostResponse>>builder()
+                .message("get all post sucessfuly")
+                .result(postService.getMyPost())
+                .build();
+    }
+
 }

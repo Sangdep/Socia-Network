@@ -12,11 +12,13 @@ import com.sangle.Network.Social.Enum.Privacy;
 import com.sangle.Network.Social.Exception.AppException;
 import com.sangle.Network.Social.Exception.ErorrCode;
 import com.sangle.Network.Social.Mapper.PostMapper;
+import com.sangle.Network.Social.Repository.PostLikeRepository;
 import com.sangle.Network.Social.Repository.PostRepository;
 import com.sangle.Network.Social.Repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,23 +32,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE ,makeFinal = true)
 @Slf4j
 public class PostService {
-
-    final PostRepository postRepository;
-    final UserRepository userRepository;
-    final PostMapper postMapper;
+     PostRepository postRepository;
+     UserRepository userRepository;
+     PostMapper postMapper;
+     PostLikeRepository postLikeRepository;
 
 
     @Value("${file.upload-dir}")
+    @NonFinal
     String uploadDir;
 
     public PostResponse createPost(PostCreateRequest postCreateRequest, List<MultipartFile> mediaFiles) throws IOException {
@@ -107,11 +107,48 @@ public class PostService {
 
     }
 
-
+    // phải kiểm tra là user hiện tại có like chưa -> để xử lí ở fe
     public List<PostResponse> getAll()
     {
-        List<Post> post=postRepository.findAll();
-        return postMapper.toPostResponsesList(post);
+        var auth=SecurityContextHolder.getContext().getAuthentication().getName();
+        User user=userRepository.findByUsername(auth)
+                .orElseThrow(()-> new AppException(ErorrCode.USER_NOT_FOUND));
+
+        List<Post> posts=postRepository.findAllByOrderByCreatedAtDesc();
+
+        List<PostResponse> responses = new ArrayList<>();
+        for(Post post1 : posts)
+        {
+            PostResponse response = postMapper.toPostResponse(post1);
+
+            boolean liked = postLikeRepository.existsByUserAndPost(user, post1); //goij tới postLike để check xem đã từng like chưa
+            response.setLikedByCurrentUser(liked); //trả về true hoặc flase
+            responses.add(response);
+        }
+
+        return responses;
+    }
+
+
+    public List<PostResponse> getMyPost() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Post> posts = postRepository.findByUser_UsernameOrderByCreatedAtDesc(username);
+        List<PostResponse> postResponses = new ArrayList<>();
+
+        for (Post post : posts) {
+            PostResponse response = postMapper.toPostResponse(post);
+
+            // Kiểm tra xem người dùng hiện tại đã like post này chưa
+            boolean liked = postLikeRepository.existsByUserAndPost(currentUser, post);
+            response.setLikedByCurrentUser(liked);
+
+            postResponses.add(response);
+        }
+
+        return postResponses;
     }
 
 

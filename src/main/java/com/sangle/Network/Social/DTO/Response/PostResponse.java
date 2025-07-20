@@ -28,6 +28,7 @@ public class PostResponse {
      int likesCount;
      int commentsCount;
      int sharesCount;
+     boolean isLikedByCurrentUser;
      List<MediaResponse> mediaList;
      LocalDateTime createdAt;
 }

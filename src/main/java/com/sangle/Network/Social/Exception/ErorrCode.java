@@ -8,6 +8,10 @@ public enum ErorrCode {
 
     NOT_FOUND_CODE(105,"booking not found confirmation code"),
     USER_NOT_FOUND(106,"user not found"),
+    SENDER_NOT_FOUND(106,"sender not found"),
+    RECEIVER_NOT_FOUND(106,"receiver not found"),
+    FRIEND_REQUEST_NOT_FOUND(106,"FRIEND_REQUEST_NOT_FOUND"),
+    NOT_FRIEND(106,"not friend"),
 
     POST_NOT_FOUND(107,"Post not found"),
 

@@ -1,5 +1,7 @@
 package com.sangle.Network.Social.Entity;
 
+import com.sangle.Network.Social.Entity.Chat.ConversationParticipant;
+import com.sangle.Network.Social.Entity.Chat.ChatMessage;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -40,5 +42,11 @@ public class User  {
 
     @OneToMany(mappedBy = "user" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Comment>comments= new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConversationParticipant> conversations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<ChatMessage>messages= new ArrayList<>();
 
 }

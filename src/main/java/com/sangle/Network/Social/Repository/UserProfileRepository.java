@@ -14,4 +14,6 @@ public interface UserProfileRepository extends JpaRepository<UserProfile,Long> {
     @Query("SELECT up FROM UserProfile up WHERE up.user.username = :username")
     Optional<UserProfile> findByUsername(@Param("username") String username);
 
+    Optional<UserProfile>findByUserId(Long userId);
+
 }

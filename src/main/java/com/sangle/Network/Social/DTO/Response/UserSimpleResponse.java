@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserSimpleResponse {
+    Long id;
     String fullName;
     String avatarUrl;
 }

@@ -56,6 +56,8 @@ public class FriendShipService {
                 .status(FriendShipStatus.PENDING)
                 .build();
 
+        FriendShip saved=friendShipRepository.save(friendShip);
+
         Notification noti= Notification.builder()
                 .receiver(receiver)
                 .sender(sender)
@@ -63,9 +65,18 @@ public class FriendShipService {
                 .content(sender.getUserProfile().getFullName() + " Đã gửi lời kết bạn cho bạn ")
                 .build();
         notificationRepository.save(noti);
+        // Map thủ công FriendShip -> FriendShipResponse
+        return FriendShipResponse.builder()
+                .id(saved.getId())
+                .sender(toSimple(sender)) // hoặc dùng mapper.toSimple()
+                .receiver(toSimple(receiver))
+                .status(saved.getStatus())
+                .createdAt(saved.getCreatedAt())
+                .build();
 
-        return friendShipMapper.toFriendResponse(friendShipRepository.save(friendShip));
     }
+
+
 
 
     public FriendShipResponse acceptFriendRequest(String senderUsername) {
@@ -82,7 +93,7 @@ public class FriendShipService {
                 .orElseThrow(() -> new AppException(ErorrCode.FRIEND_REQUEST_NOT_FOUND));
 
         friendShip.setStatus(FriendShipStatus.ACCEPTED);
-        friendShipRepository.save(friendShip);
+        FriendShip saved=friendShipRepository.save(friendShip);
 
         Notification noti = Notification.builder()
                 .receiver(sender) // thông báo cho sender
@@ -92,7 +103,14 @@ public class FriendShipService {
                 .build();
         notificationRepository.save(noti);
 
-        return friendShipMapper.toFriendResponse(friendShip);
+        // Map thủ công FriendShip -> FriendShipResponse
+        return FriendShipResponse.builder()
+                .id(saved.getId())
+                .sender(toSimple(sender)) // hoặc dùng mapper.toSimple()
+                .receiver(toSimple(receiver))
+                .status(saved.getStatus())
+                .createdAt(saved.getCreatedAt())
+                .build();
     }
 
 
@@ -108,14 +126,47 @@ public class FriendShipService {
         return friendships.stream()
                 .map(friendship -> {
                     User friend;
+                    //neu toi la nguoi gui(sender ) thi sẽ lay ra ban (receiver)
                     if (friendship.getSender().getId().equals(user.getId())) {
                         friend = friendship.getReceiver();
-                    } else {
+
+                    }
+                    //nguoc lai
+                    else {
                         friend = friendship.getSender();
                     }
-                    return friendShipMapper.toSimple(friend);
+                    return toSimple(friend);
                 })
                 .collect(Collectors.toList());
+    }
+
+    public List<UserSimpleResponse> getReceiverList()
+    {
+        var auth=SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user=userRepository.findByUsername(auth)
+                .orElseThrow(() -> new AppException(ErorrCode.USER_NOT_FOUND));
+
+        //day la 1 list chua doi tuong
+        List<FriendShip> friendShips=friendShipRepository
+                .findByReceiverAndStatus(user,FriendShipStatus.PENDING);
+
+        // Map danh sách sender (người gửi lời mời) thành UserSimpleResponse
+        List<UserSimpleResponse> senders = friendShips.stream()
+                .map(friendShip -> {
+                    //lay ra nguoi da gui ket ban den toi
+                    User sender = friendShip.getSender();
+                    return UserSimpleResponse.builder()
+                            .id(sender.getId())
+                            .avatarUrl(sender.getUserProfile().getAvatarUrl())
+                            .fullName(sender.getUserProfile().getFullName())
+                            .build();
+                })
+                .toList();
+        //su dung thay cho foreach
+
+        return senders;
+
     }
 
     public void removeFriend(String friendUsername) {
@@ -164,6 +215,14 @@ public class FriendShipService {
                     .build();
             friendShipRepository.save(block);
         }
+    }
+
+    private UserSimpleResponse toSimple(User user) {
+        return UserSimpleResponse.builder()
+                .id(user.getId())
+                .fullName(user.getUserProfile().getFullName())
+                .avatarUrl(user.getUserProfile().getAvatarUrl())
+                .build();
     }
 
 }

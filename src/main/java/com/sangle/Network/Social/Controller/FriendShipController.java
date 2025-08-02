@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE ,makeFinal = true)
 @Slf4j
 @RequiredArgsConstructor
-
 public class FriendShipController {
     FriendShipService friendShipService;
+
 
     @PostMapping("/send-friend/{ReceiverUsername}")
     ApiResponse<FriendShipResponse> sendFriendRequest(@PathVariable String ReceiverUsername)
@@ -31,6 +32,7 @@ public class FriendShipController {
                 .build();
     }
 
+    //fix lai su dung id
     @PostMapping("/accept-friend/{senderUsername}")
     ApiResponse<FriendShipResponse> acceptFriendRequest(@PathVariable String senderUsername)
     {
@@ -64,6 +66,15 @@ public class FriendShipController {
         return ApiResponse.<String>builder()
                 .message("Block friend success")
                 .result("Blocked " + friendUsername)
+                .build();
+    }
+
+    @GetMapping("/get-receive-list")
+    ApiResponse<List<UserSimpleResponse>>getReceiverList()
+    {
+        return ApiResponse.<List<UserSimpleResponse>>builder()
+                .message("get receiver list success")
+                .result(friendShipService.getReceiverList())
                 .build();
     }
 

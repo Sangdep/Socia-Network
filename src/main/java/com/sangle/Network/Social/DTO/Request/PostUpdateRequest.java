@@ -16,10 +16,10 @@ import lombok.experimental.FieldDefaults;
 public class PostUpdateRequest {
     @NotBlank(message = "Nội dung bài viết không được để trống")
     @Size(max = 500, message = "Nội dung bài viết không được quá 500 ký tự")
-    private String content;
+     String content;
 
     @NotNull(message = "Quyền riêng tư không được để trống")
-    private Privacy privacy;
+     Privacy privacy;
 
-    private String location;
+     String location;
 }

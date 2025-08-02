@@ -7,6 +7,8 @@ import com.sangle.Network.Social.Entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface FriendShipMapper {
 
@@ -14,4 +16,6 @@ public interface FriendShipMapper {
     @Mapping(source = "receiver", target = "receiver")
     FriendShipResponse toFriendResponse(FriendShip friendShip);
     UserSimpleResponse toSimple(User user);
+
+    List<FriendShipResponse> toFriendResponseList(List<FriendShip> friendShip);
 }

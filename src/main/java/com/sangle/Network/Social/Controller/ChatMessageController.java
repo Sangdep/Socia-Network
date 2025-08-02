@@ -25,7 +25,7 @@ public class ChatMessageController {
 
     ChatMessageService chatMessageService;
 
-    @GetMapping
+        @GetMapping("/get-message")
     ApiResponse<List<ChatMessageResponse>> getMessages(
             @RequestParam("conversationId") Long conversationId) {
         return ApiResponse.<List<ChatMessageResponse>>builder()

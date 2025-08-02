@@ -24,12 +24,12 @@ public class UserProfileController {
     @Autowired
     UserProfileService userProfileService;
 
-    @PutMapping( value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ApiResponse<UserProfileResponse>updateProfile(@PathVariable Long id,
+    @PutMapping( value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ApiResponse<UserProfileResponse>updateProfile(
                                                   @ModelAttribute UpdateProfileRequest request) throws IOException {
         return ApiResponse.<UserProfileResponse>builder()
                 .message("update success")
-                .result(userProfileService.updateProfile(id,request))
+                .result(userProfileService.updateProfile(request))
                 .build();
     }
 

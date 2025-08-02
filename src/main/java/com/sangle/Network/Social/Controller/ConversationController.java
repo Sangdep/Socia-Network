@@ -21,14 +21,14 @@ import java.util.List;
 public class ConversationController {
     ConversationService conversationService;
 
-    // Tạo cuộc trò chuyện 1-1
-    @PostMapping("/one-to-one")
-    public ApiResponse<ConversationResponse> createOneToOne(@RequestBody ConversationRequest request) {
-        ConversationResponse response = conversationService.createOneToOne(request);
-        return ApiResponse.<ConversationResponse>builder()
-                .result(response)
-                .build();
-    }
+        // Tạo cuộc trò chuyện 1-1
+        @PostMapping("/one-to-one")
+        public ApiResponse<ConversationResponse> createOneToOne(@RequestBody ConversationRequest request) {
+            ConversationResponse response = conversationService.createOneToOne(request);
+            return ApiResponse.<ConversationResponse>builder()
+                    .result(response)
+                    .build();
+        }
 
     // Tạo nhóm trò chuyện
     @PostMapping("/group")

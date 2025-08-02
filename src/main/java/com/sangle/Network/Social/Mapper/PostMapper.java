@@ -29,7 +29,7 @@ public interface PostMapper {
 
         UserProfileResponse dto = new UserProfileResponse();
         dto.setId(user.getId());
-        dto.setFullName(user.getUsername()); // Nếu bạn muốn username ở đây, hoặc sửa thành dto.setUsername() nếu cần rõ ràng hơn
+        dto.setFullName(user.getUserProfile().getFullName()); // Nếu bạn muốn username ở đây, hoặc sửa thành dto.setUsername() nếu cần rõ ràng hơn
 
         if (user.getUserProfile() != null) {
             dto.setAvatarUrl(user.getUserProfile().getAvatarUrl()); // chỉ set avatar

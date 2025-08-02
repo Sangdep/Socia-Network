@@ -77,9 +77,11 @@ public class UserProfileService {
 
     }
 
-    public UserProfileResponse updateProfile(Long id, UpdateProfileRequest request) throws IOException {
+    public UserProfileResponse updateProfile( UpdateProfileRequest request) throws IOException {
 
-        UserProfile userProfile = userProfileRepository.findById(id)
+        var auth=SecurityContextHolder.getContext().getAuthentication().getName();
+
+        UserProfile userProfile = userProfileRepository.findByUsername(auth)
                 .orElseThrow(()-> new AppException(ErorrCode.USERPROFILE_NOT_FOUND));
 
         //map tu updaterequest vao userprofile

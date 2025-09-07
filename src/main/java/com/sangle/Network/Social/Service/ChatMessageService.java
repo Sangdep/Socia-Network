@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,10 +34,11 @@ public class ChatMessageService {
     UserProfileRepository userProfileRepository;
     UserRepository userRepository;
 
-    public ChatMessageResponse creatChat(ChatMessageRequest request)
+    @Transactional
+    public ChatMessageResponse creatChat(String userCurrent,ChatMessageRequest request)
     {
-        var auth = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user=userRepository.findByUsername(auth)
+
+        User user=userRepository.findByUsername(userCurrent)
                 .orElseThrow(() -> new AppException(ErorrCode.USER_NOT_FOUND));
 
         Long userId= user.getId();

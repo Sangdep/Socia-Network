@@ -12,6 +12,7 @@ import java.util.List;
 public interface ConversationMapper {
 
     @Mapping(source = "participants", target = "participants")
+    @Mapping(source = "id", target = "conversationId")
     ConversationResponse toDto(Conversation conversation);
 
     @Mapping(source = "user.id", target = "userId")

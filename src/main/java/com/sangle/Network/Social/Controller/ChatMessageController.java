@@ -18,16 +18,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/chatMessages")
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 @RequiredArgsConstructor
 public class ChatMessageController {
 
     ChatMessageService chatMessageService;
 
-        @GetMapping("/get-message")
+        @GetMapping("/get-message/{conversationId}")
     ApiResponse<List<ChatMessageResponse>> getMessages(
-            @RequestParam("conversationId") Long conversationId) {
+            @PathVariable Long conversationId) {
         return ApiResponse.<List<ChatMessageResponse>>builder()
                 .result(chatMessageService.getChatHistory(conversationId))
                 .build();

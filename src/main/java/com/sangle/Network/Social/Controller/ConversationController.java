@@ -15,16 +15,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/conversations")
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @Slf4j
 @RequiredArgsConstructor
 public class ConversationController {
     ConversationService conversationService;
 
         // Tạo cuộc trò chuyện 1-1
-        @PostMapping("/one-to-one")
-        public ApiResponse<ConversationResponse> createOneToOne(@RequestBody ConversationRequest request) {
-            ConversationResponse response = conversationService.createOneToOne(request);
+        @PostMapping("/one-to-one/{PartnerId}")
+        public ApiResponse<ConversationResponse> createOneToOne(@PathVariable Long PartnerId) {
+            ConversationResponse response = conversationService.createOneToOne(PartnerId);
             return ApiResponse.<ConversationResponse>builder()
                     .result(response)
                     .build();

@@ -34,15 +34,16 @@ public class ConversationService {
       ConversationParticipantRepository conversationParticipantRepository;
       ConversationMapper conversationMapper;
 
-      public ConversationResponse createOneToOne(ConversationRequest request)
+      public ConversationResponse createOneToOne(Long  partnerId)
       {
           var username = SecurityContextHolder.getContext().getAuthentication().getName();
 
           User currentUser = userRepository.findByUsername(username)
                   .orElseThrow(() -> new RuntimeException("Current user not found"));
 
+
           Long currentUserId = currentUser.getId();
-          Long partnerId = request.getPartnerId();
+
 
           //kiem tra xem conversation exist . neu co thi get ra
           Optional<Conversation> existing = conversationRepository.findOneToOneConversation(currentUserId, partnerId);
